@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 void capsAll(char* word);
-bool hasNeighbor(char** arr, char letter, char** location);
+void hasNeighbor(char** arr, char letter, int row, int column);
 
 // Declarations of the two functions you will implement
 // Feel free to declare any helper functions or global variables
@@ -80,13 +80,16 @@ void searchPuzzle(char** arr, char* word) {
     // Your implementation here...
 
     capsAll(word); // make all letters caps
-    char firstLetter = *word; // get first letter of word
+    char currentLetter = *word; // get first letter of word
 
-    for(int i = 0; i < bSize; i++){ // loop through 2D array
-        for(int j = 0; j < bSize; j++){ // loop through 2D array
-            if(*(*(arr + i) + j) == *firstLetter){ // check if located first letter
-                hasNeighbor(arr, firstLetter, *((arr + i ) + j)); // search for further letters
+    for(int row = 0; row < bSize; row++){ // loop through 2D array
+        for(int column = 0; column < bSize; column++){ // loop through 2D array
+
+            if(*(*(arr + row) + column) == currentLetter){ // check if located first letter
+                hasNeighbor(arr, currentLetter, row, column); // search for further letters
+
             }
+
         }
     }
 }
@@ -99,34 +102,23 @@ void capsAll(char* word){ // +++++ COMPLETED +++++
     }
 }
 
-bool hasNeighbor(char** arr, char letter, char** location){
-    for(){
+void hasNeighbor(char** arr, char letter, int row, int column){
+    if(row == bSize-1){ // check if located on right column
+        
+    }
+    
+    if(row == 0){ // check if located on left column
+        if(*(*(arr + row) + column) == letter){
+            char newLetter = letter+1; // increment to next letter
+            hasNeighbor(arr, newLetter, row, column);
+        }
+    }
+
+    if(column == bSize-1){ // check if located on bottom row
 
     }
-    // if(arr[][] == letter || arr[][] == letter){
-    //  
-    // }
     
-    // if( i == bSize-1){ // check if located on right column
-        
-    // }
-    
-    // if(i == 0){ // check if located on left column
-    //     if(value at index = letter){
+    if(column == 0){ // check if located on top row
 
-    //         hasNeighbor(arr, newLetter, location);
-    //     }
-    // }
-
-    // if(j == bSize-1){ // check if located on bottom row
-
-    // }
-
-    // if(j == 0){ // check if located on top row
-
-    // }
-
-    return false;
+    }
 }
-
-//Testing
