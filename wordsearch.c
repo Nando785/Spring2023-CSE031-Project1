@@ -128,3 +128,5 @@ bool hasNeighbor(char** arr, char letter, char** location){
 
     return false;
 }
+
+//Testing
