@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 void capsAll(char* word);
-void hasNeighbor(char** arr, char letter, int row, int column);
+void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column);
 
 // Declarations of the two functions you will implement
 // Feel free to declare any helper functions or global variables
@@ -86,7 +86,7 @@ void searchPuzzle(char** arr, char* word) {
         for(int column = 0; column < bSize; column++){ // loop through 2D array
 
             if(*(*(arr + row) + column) == currentLetter){ // check if located first letter
-                hasNeighbor(arr, currentLetter, row, column); // search for further letters
+                hasNeighbor(arr, currentLetter, 1, row, column); // search for further letters
 
             }
 
@@ -102,15 +102,15 @@ void capsAll(char* word){ // +++++ COMPLETED +++++
     }
 }
 
-void hasNeighbor(char** arr, char letter, int row, int column){
+void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column){
     if(row == bSize-1){ // check if located on right column
         
     }
     
     if(row == 0){ // check if located on left column
-        if(*(*(arr + row) + column) == letter){
-            char newLetter = letter+1; // increment to next letter
-            hasNeighbor(arr, newLetter, row, column);
+        if(*(*(arr + row) + column) == word+letterIndex){ // if index = letter
+            letterIndex + 1; // increment to next letter
+            hasNeighbor(arr, word, letterIndex, row, column); // search for next letter
         }
     }
 
