@@ -104,69 +104,27 @@ void searchPuzzle(char** arr, char* word) { // +++++ COMPLETED ? +++++
 }
 
 void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column){
-// ===== vertical and horizontal comparisons =====
-    if(row != bSize-1){ // check if located on right column
-        if(*(*(arr + row + 1) + column) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row + 1, column); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row + 1, column); // search for next letter
-        }
-    }
-    
-    if(row != 0){ // check if located on left column
-        if(*(*(arr + row - 1) + column) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row - 1, column); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row - 1, column); // search for next letter
-        }
-    }
+    // if(row != bSize-1){ // check if located on right column
+    //     if(*(*(arr + row + 1) + column) == *(word+letterIndex)){ // if index contains letter
+    //         printf("Row: %d, Column: %d\n", row + 1, column); // replace with stack push // save index location in stack
+    //         letterIndex++; // increment for next letter
+    //         hasNeighbor(arr, word, letterIndex, row + 1, column); // search for next letter
+    //     }
+    // }
 
-    if(column != bSize-1){ // check if located on bottom row
-        if(*(*(arr + row) + column + 1) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row, column + 1); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row, column + 1); // search for next letter
-        }
-    }
-    
-    if(column != 0){ // check if located on top row
-        if(*(*(arr + row) + column - 1) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row, column - 1); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row, column - 1); // search for next letter
-        }
-    }
+    for(int i = row - 1; i <= row + 1; i++){
+        for(int j = column - 1; j <= column + 1; j++){
+            if( !(i < 0) && !( i > bSize-1) && !(j < 0) && !(j > bSize-1) ){ // check if valid index
+                if(i != row || j != column){ // avoid current location
+                    //printf("Row: %d, Column: %d\n", i, j);
 
-    // ===== Adjacent Comparisons =====
-    if(row != 0 && column != 0){ // check top left
-        if(*(*(arr + row - 1) + column - 1) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row - 1, column - 1); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row - 1, column - 1); // search for next letter
-        }
-    }
-    
-    if(row != bSize-1 && column != 0){ // check top right
-        if(*(*(arr + row) + column) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row, column); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row, column); // search for next letter
-        }
-    }
-
-    if(row != 0 && column != bSize-1){ // check bottom left
-        if(*(*(arr + row) + column) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row, column); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row, column); // search for next letter
-        }
-    }
-    
-    if(row != bSize-1 && column != bSize-1){ // check bottom right
-        if(*(*(arr + row) + column) == *(word+letterIndex)){ // if index contains letter
-            printf("Row: %d, Column: %d\n", row, column); // replace with stack push // save index location in stack
-            letterIndex++; // increment for next letter
-            hasNeighbor(arr, word, letterIndex, row, column); // search for next letter
+                    if(*(*(arr + i) + j) == *(word+letterIndex)){ // if index contains letter
+                        printf("Row: %d, Column: %d\n", i, j); // replace with stack push // save index location in stack
+                        letterIndex++; // increment for next letter
+                        hasNeighbor(arr, word, letterIndex, i, j); // search for next letter
+                    }
+                }
+            }
         }
     }
 }
