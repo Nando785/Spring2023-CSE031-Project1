@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 void capsAll(char* word);
-void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column);
+void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, int amountSearched);
 
 // Declarations of the two functions you will implement
 // Feel free to declare any helper functions or global variables
@@ -95,7 +95,7 @@ void searchPuzzle(char** arr, char* word) { // +++++ COMPLETED ? +++++
 
             if(*(*(arr + row) + column) == currentLetter){ // check if located first letter
                 printf("Row: %d, Column: %d\n", row, column); // replace with stack push // save index location in stack
-                hasNeighbor(arr, word, 0, row, column); // search for further letters
+                hasNeighbor(arr, word, 0, row, column, 1); // search for further letters
 
             }
 
@@ -103,7 +103,7 @@ void searchPuzzle(char** arr, char* word) { // +++++ COMPLETED ? +++++
     }
 }
 
-void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column){
+void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, int amountSearched){
     // if(row != bSize-1){ // check if located on right column
     //     if(*(*(arr + row + 1) + column) == *(word+letterIndex)){ // if index contains letter
     //         printf("Row: %d, Column: %d\n", row + 1, column); // replace with stack push // save index location in stack
@@ -112,8 +112,8 @@ void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column){
     //     }
     // }
 
-    for(int i = row - 1; i <= row + 1; i++){
-        for(int j = column - 1; j <= column + 1; j++){
+    for(int i = row - 1; i <= row + 1; i++){ // search surrounding rowd
+        for(int j = column - 1; j <= column + 1; j++){ // search surrounding columns
             if( !(i < 0) && !( i > bSize-1) && !(j < 0) && !(j > bSize-1) ){ // check if valid index
                 if(i != row || j != column){ // avoid current location
                     //printf("Row: %d, Column: %d\n", i, j);
@@ -121,7 +121,11 @@ void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column){
                     if(*(*(arr + i) + j) == *(word+letterIndex)){ // if index contains letter
                         printf("Row: %d, Column: %d\n", i, j); // replace with stack push // save index location in stack
                         letterIndex++; // increment for next letter
-                        hasNeighbor(arr, word, letterIndex, i, j); // search for next letter
+                        hasNeighbor(arr, word, letterIndex, i, j, amountSearched++); // search for next letter
+                    }else if(row == column){ // if we've reached the last index (no more letters around)
+                        for(int k = 0; k < amountSearched; k++){
+                            printf("%d locatoin(s) popped", k+1); // replace with stack pop // remove any previously saved indices
+                        }
                     }
                 }
             }
