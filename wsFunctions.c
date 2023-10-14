@@ -6,28 +6,32 @@
 #ifndef STACK_H
 #define STACK_H
 
-struct node{
+using namespace std;
+
+
+
+
+struct letters{
     char letter;
-    struct node* next;
+    letters* next;
 };
 
 
-struct Stack{
+class Stack{
+private:  
+    letters* top;
+public:     
 
-    struct node* top;
-
-    
-    
-    // struct Stack()
-    // {
-    //     top = nullptr;
-    // }
+    Stack()
+    {
+        top = nullptr;
+    }
 
     ~Stack()
     {
-        Node* temp;
+        letters* temp;
 
-        while (top != nullptr)
+        while(top != nullptr)
         {
             temp = top;
             top = top->next;
@@ -35,22 +39,28 @@ struct Stack{
         }
     }
 
-    void push(int id)
+    void push(char letter)
     {
-        Node* temp = new Node;
+        letters* temp = new letters;
 
-        temp->id = id;
+        temp->letter = letter;
 
         temp->next = top;
         top = temp;
     }
-    
-    void pop(int& id)
+
+    void pop(char& letter)
     {
-        Node* temp = top;
+        if (top == nullptr)
+        {
+            cout << "Stack is empty." << endl;
+            letter = '\0';
+            return;
+        }   
+        
+        letters* temp = top;
 
-
-        id = top->id;
+        letter = top->letter;
 
         top = top->next;
 
@@ -62,13 +72,13 @@ struct Stack{
         return (top == nullptr);
     }
 
-    bool Stack::isFull()
+    bool isFull()
     {
-        Node* temp;
+        letters* temp;
 
         try
         {
-            temp = new Node;
+            temp = new letters;
             delete temp;
             return false;
         }
@@ -76,8 +86,10 @@ struct Stack{
         {
             return true;
         }
-    }
         
+    }
+
+
 };
 
 
