@@ -119,10 +119,13 @@ void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, i
                     //printf("Row: %d, Column: %d\n", i, j);
 
                     if(*(*(arr + i) + j) == *(word+letterIndex)){ // if index contains letter
-                        printf("Row: %d, Column: %d\n", j, i); // replace with stack push // save index location in stack
+                        printf("Row: %d, Column: %d\n", i, j); // replace with stack push // save index location in stack
                         letterIndex++; // increment for next letter
                         hasNeighbor(arr, word, letterIndex, i, j, amountSearched++); // search for next letter
                     }else if(row == column){ // if we've reached the last index (no more letters around)
+                        // potential issue: amountSearched does not decrease, will delete more than needed
+                        // potential fix: pass amountSearched as a reference, make copy for loop, loop and decrement reference by one
+                        printf("amountSearched: %d\n", amountSearched);
                         for(int k = 0; k < amountSearched; k++){
                             printf("%d location(s) popped\n", k+1); // replace with stack pop // remove any previously saved indices
                         }
