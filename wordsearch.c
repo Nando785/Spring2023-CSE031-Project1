@@ -2,14 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <stdbool.h>
-void capsAll(char* word);
-void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, int amountSearched);
-
 // Declarations of the two functions you will implement
 // Feel free to declare any helper functions or global variables
+void capsAll(char* word);
 void printPuzzle(char** arr);
 void searchPuzzle(char** arr, char* word);
+void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, int amountSearched);
+void printResult(int stack[]);
 int bSize;
 
 // Main function, DO NOT MODIFY 	
@@ -73,6 +72,7 @@ void printPuzzle(char** arr) { // +++++ COMPLETED +++++
 }
 
 void capsAll(char* word){ // +++++ COMPLETED +++++
+
     for(int i = 0; i < 20; i++){
         if(*(word + i) >= 'a' && *(word + i) <= 'z'){ // check if lower case letter
             *(word + i) = *(word + i) - 32; // capitalize letters (subtract 32 from ASCII value)
@@ -80,7 +80,11 @@ void capsAll(char* word){ // +++++ COMPLETED +++++
     }
 }
 
-void searchPuzzle(char** arr, char* word) { // +++++ COMPLETED ? +++++
+void printResult(int stack[]){
+
+}
+
+void searchPuzzle(char** arr, char* word) {
     // This function checks if arr contains the search word. If the 
     // word appears in arr, it will print out a message and the path 
     // as shown in the sample runs. If not found, it will print a 
@@ -104,13 +108,10 @@ void searchPuzzle(char** arr, char* word) { // +++++ COMPLETED ? +++++
 }
 
 void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, int amountSearched){
-    // if(row != bSize-1){ // check if located on right column
-    //     if(*(*(arr + row + 1) + column) == *(word+letterIndex)){ // if index contains letter
-    //         printf("Row: %d, Column: %d\n", row + 1, column); // replace with stack push // save index location in stack
-    //         letterIndex++; // increment for next letter
-    //         hasNeighbor(arr, word, letterIndex, row + 1, column); // search for next letter
-    //     }
-    // }
+    if(*(word+letterIndex) == '\0'){ // exit once we have reached the end of the word
+        printf("Word found!\n");
+        return;
+    }
 
     for(int i = row - 1; i <= row + 1; i++){ // search surrounding rowd
         for(int j = column - 1; j <= column + 1; j++){ // search surrounding columns
@@ -134,4 +135,5 @@ void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, i
             }
         }
     }
+    return;
 }
