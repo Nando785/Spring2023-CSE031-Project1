@@ -95,7 +95,7 @@ void searchPuzzle(char** arr, char* word) { // +++++ COMPLETED ? +++++
 
             if(*(*(arr + row) + column) == currentLetter){ // check if located first letter
                 printf("Row: %d, Column: %d\n", row, column); // replace with stack push // save index location in stack
-                hasNeighbor(arr, word, 0, row, column, 1); // search for further letters
+                hasNeighbor(arr, word, 1, row, column, 1); // search for further letters
 
             }
 
@@ -119,12 +119,12 @@ void hasNeighbor(char** arr, char* word, int letterIndex, int row, int column, i
                     //printf("Row: %d, Column: %d\n", i, j);
 
                     if(*(*(arr + i) + j) == *(word+letterIndex)){ // if index contains letter
-                        printf("Row: %d, Column: %d\n", i, j); // replace with stack push // save index location in stack
+                        printf("Row: %d, Column: %d\n", j, i); // replace with stack push // save index location in stack
                         letterIndex++; // increment for next letter
                         hasNeighbor(arr, word, letterIndex, i, j, amountSearched++); // search for next letter
                     }else if(row == column){ // if we've reached the last index (no more letters around)
                         for(int k = 0; k < amountSearched; k++){
-                            printf("%d locatoin(s) popped", k+1); // replace with stack pop // remove any previously saved indices
+                            printf("%d location(s) popped\n", k+1); // replace with stack pop // remove any previously saved indices
                         }
                     }
                 }
