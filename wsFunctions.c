@@ -6,92 +6,68 @@
 #ifndef STACK_H
 #define STACK_H
 
-using namespace std;
 
-
-
-
-struct letters{
+struct letters {
     char letter;
-    letters* next;
+    struct letters* next;
 };
 
-
-class Stack{
-private:  
-    letters* top;
-public:     
-
-    Stack()
-    {
-        top = nullptr;
-    }
-
-    ~Stack()
-    {
-        letters* temp;
-
-        while(top != nullptr)
-        {
-            temp = top;
-            top = top->next;
-            delete temp;
-        }
-    }
-
-    void push(char letter)
-    {
-        letters* temp = new letters;
-
-        temp->letter = letter;
-
-        temp->next = top;
-        top = temp;
-    }
-
-    void pop(char& letter)
-    {
-        if (top == nullptr)
-        {
-            cout << "Stack is empty." << endl;
-            letter = '\0';
-            return;
-        }   
-        
-        letters* temp = top;
-
-        letter = top->letter;
-
-        top = top->next;
-
-        delete temp;
-    }
-
-    bool isEmpty()
-    {
-        return (top == nullptr);
-    }
-
-    bool isFull()
-    {
-        letters* temp;
-
-        try
-        {
-            temp = new letters;
-            delete temp;
-            return false;
-        }
-        catch(bad_alloc)
-        {
-            return true;
-        }
-        
-    }
-
-
+struct Stack {
+    struct letters* top;
 };
 
+struct Stack* createStack() {
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    if (stack == NULL) {
+        return NULL;
+    }
+    stack->top = NULL;
+    return stack;
+}
+
+void destroyStack(struct Stack* stack) {
+    if (stack == NULL) {
+        return;
+    }
+
+    struct letters* temp;
+    while (stack->top != NULL) {
+        temp = stack->top;
+        stack->top = stack->top->next;
+        free(temp);
+    }
+
+    free(stack);
+}
+
+void push(struct Stack* stack, char letter) {
+    struct letters* temp = (struct letters*)malloc(sizeof(struct letters));
+    if (temp == NULL) {
+        fprintf(stderr, "Memory allocation error\n");
+        return;
+    }
+
+    temp->letter = letter;
+    temp->next = stack->top;
+    stack->top = temp;
+}
+
+void pop(struct Stack* stack, char* letter) {
+    if (stack->top == NULL) {
+        fprintf(stderr, "Stack is empty.\n");
+        *letter = '\0';
+        return;
+    }
+
+    struct letters* temp = stack->top;
+    *letter = stack->top->letter;
+    stack->top = stack->top->next;
+    free(temp);
+}
+
+bool isEmpty(const struct Stack* stack) {
+    return (stack->top == NULL);
+}
 
 
 #endif
