@@ -15,6 +15,7 @@ struct node {
 
 struct Stack {
     struct node* top;
+    int iterator;
 };
 
 struct Stack* createStack() {
@@ -23,6 +24,7 @@ struct Stack* createStack() {
         return NULL;
     }
     stack->top = NULL;
+    stack->iterator = -1;
     return stack;
 }
 
@@ -42,6 +44,7 @@ void destroyStack(struct Stack* stack) {
 }
 
 void push(struct Stack* stack, struct node* loc) {
+    stack->iterator++;
     struct node* temp = (struct node*)malloc(sizeof(struct node));
     if (temp == NULL) {
         fprintf(stderr, "Memory allocation error\n");
@@ -54,15 +57,15 @@ void push(struct Stack* stack, struct node* loc) {
     stack->top = temp;
 }
 
-void pop(struct Stack* stack, struct node loc) {
+void pop(struct Stack* stack) {
     if (stack->top == NULL) {
-        fprintf(stderr, "Stack is empty.\n");
         //*letter = '\0';
         return;
     }
 
     struct node* temp = stack->top;
     stack->top = stack->top->next;
+    stack->iterator--;
     free(temp);
 }
 
