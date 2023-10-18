@@ -70,11 +70,9 @@ void printPuzzle(char** arr) {
         }
         printf("\n");
     }
-
 }
 
-void capsAll(char* word){
-
+void capsAll(char* word){ // capitalize all letters in word
     for(int i = 0; i < 20; i++){
         if(*(word + i) >= 'a' && *(word + i) <= 'z'){ // check if lower case letter
             *(word + i) = *(word + i) - 32; // capitalize letters (subtract 32 from ASCII value)
@@ -82,62 +80,51 @@ void capsAll(char* word){
     }
 }
 
-void printResult(){
+void printResult(){ // print the search path
     printf("\nPrinting the search path:\n");
     char ***finalArray = (char***)malloc(bSize * sizeof(char**));
 
-    for(int row = 0; row < bSize; row++){
+    for(int row = 0; row < bSize; row++){ // initialize finalArray, all indexes must contain "0"
         *(finalArray + row) = (char**)malloc(bSize * sizeof(char*));
         for(int column = 0; column < bSize; column++){
-            *(*(finalArray+row)+column) = (char*)malloc(25 * sizeof(char)); // Allocate space for two characters (1 for digit, 1 for null terminator)
+            *(*(finalArray+row)+column) = (char*)malloc(2 * sizeof(char)); // Allocate space for two characters (1 for digit, 1 for null terminator)
             *(*(finalArray+row)+column) = "0";
         }
     }
 
-    // for(int index = 0; index < storage->iterator; index++){
-    //     printf("(%d,%d)\n",storage->top[index].i, storage->top[index].j);
-    // }
-
-    // char num[] = "0";
-    // sprintf(num, "%d", index); // set num to the number we'll be inserting
-
-    // if(!strcmp(*(*(finalArray + storage->top[index].i) + storage->top[index].j), "0")){ // If the index is 0 (untouched), remove the zero
-    //     strcpy(*(*(finalArray + storage->top[index].i) + storage->top[index].j), "");
-    // }
-
-    // printf("\nTEST\n");
-    // *(*(finalArray + storage->top[index].i) + storage->top[index].j) = strcat(*(*(finalArray + storage->top[index].i) + storage->top[index].j), num); // concatenate the number to index
-
-    int iterator = 1;
+    int iterator = storage->nodeCount+1;
+    char* num = (char*)malloc(2*sizeof(char));
     while(storage->top != NULL){
         struct node* temp = storage->top;
+        char* temp_str = *(*(finalArray + temp->i) + temp->j);
 
-        char num[] = "0";
-        sprintf(num, "%d", iterator);
+        sprintf(num, "%d", iterator); // copy location number 
 
-        if(*(*(finalArray + temp->i) + temp->j) == "0"){
-            *(*(finalArray + temp->i) + temp->j) == "";
-        }
+        if(strcmp(temp_str, "0") == 0){ // if character at location is 0
+            *(*(finalArray + temp->i) + temp->j) = malloc(strlen(num) + 1); // allocate memeory for num
+            strcpy(*(*(finalArray + temp->i) + temp->j), num); // insert iterator
+        } else {
+            char* concatenated = (char*)malloc(strlen(temp_str) + strlen(num) + 1); // allocate memory for current string and number to be added
+            strcpy(concatenated, temp_str); // copy current string
+            strcat(concatenated, num); // attach number to index
+            *(*(finalArray + temp->i) + temp->j) = concatenated; // insert into finalArray
+        }       
 
-        //*(*(finalArray + temp->i) + temp->j) = strcat(x, num); // concatenate the number to index
-        //*(*(finalArray + temp->i) + temp->j) = *(*(finalArray + temp->i) + temp->j) + num[1];
-
-        iterator++;
-        //printf("(%d,%d)\n",temp->i, temp->j);
-        pop(storage);   
+        iterator--;
+        pop(storage);
     }
 
-    for(int row = 0; row < bSize; row++){
+    for(int row = 0; row < bSize-1; row++){ // print finalArray
         for(int col = 0; col < bSize; col++){
             printf("%s\t", *(*(finalArray + row) + col));
         }
         printf("\n");
     }
 
-    //destroyStack(&storage);
+    for(int row = 0; row < bSize; row++){// print array's last row
+        printf("%s\t", *(*(finalArray + bSize-1) + row));
+    }
 }
-
-
 
 void searchPuzzle(char** arr, char* word) {
     storage = createStack();
@@ -146,7 +133,6 @@ void searchPuzzle(char** arr, char* word) {
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
-
     capsAll(word); // make all letters caps
     const char currentLetter = *word; // get first letter of word
 
@@ -154,8 +140,8 @@ void searchPuzzle(char** arr, char* word) {
         for(int column = 0; column < bSize; column++){ // loop through 2D array
 
             if(*(*(arr + row) + column) == currentLetter){ // check if located first letter
-                struct node loc = {row, column};
-                push(storage, &loc);
+                struct node loc = {row, column}; // make a copy of current location
+                push(storage, &loc); // save current location to stack
                 letterIndex++;
                 hasNeighbor(arr, word, row, column); // search for further letters
 
@@ -172,9 +158,11 @@ void searchPuzzle(char** arr, char* word) {
     if(notFinished){ // if not found, notify
         printf("Word not found\n");
     }
+
+    destroyStack(storage); // free stack memory
 }
 
-void hasNeighbor(char** arr, char* word, int row, int column){
+void hasNeighbor(char** arr, char* word, int row, int column){ // search indexes around [row,column] for next letter
     if(!notFinished){ // If word already found, just return
         return;
     }

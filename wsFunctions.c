@@ -7,34 +7,34 @@
 #define STACK_H
 
 
-struct node {
+struct node { // storage for i and j location
     int i;
     int j;
     struct node* next;
 };
 
-struct Stack {
+struct Stack { // storage for locations
     struct node* top;
-    int iterator;
+    int nodeCount;
 };
 
 struct Stack* createStack() {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack)); // allocate memory for stack
     if (stack == NULL) {
         return NULL;
     }
-    stack->top = NULL;
-    stack->iterator = -1;
+    stack->top = NULL; // initialize variables in empty stack
+    stack->nodeCount = -1;
     return stack;
 }
 
 void destroyStack(struct Stack* stack) {
-    if (stack == NULL) {
+    if (stack == NULL) { // quit if nothing to destroy
         return;
     }
 
     struct node* temp;
-    while (stack->top != NULL) {
+    while (stack->top != NULL) { // loop through stack until empty, free each node
         temp = stack->top;
         stack->top = stack->top->next;
         free(temp);
@@ -44,28 +44,26 @@ void destroyStack(struct Stack* stack) {
 }
 
 void push(struct Stack* stack, struct node* loc) {
-    stack->iterator++;
+    stack->nodeCount++; // increase node count by one
     struct node* temp = (struct node*)malloc(sizeof(struct node));
     if (temp == NULL) {
-        fprintf(stderr, "Memory allocation error\n");
         return;
     }
 
-    temp->i = loc->i;
+    temp->i = loc->i; // add node to top
     temp->j = loc->j;
     temp->next = stack->top;
     stack->top = temp;
 }
 
 void pop(struct Stack* stack) {
-    if (stack->top == NULL) {
-        //*letter = '\0';
+    if (stack->top == NULL) { // quit if empty
         return;
     }
 
-    struct node* temp = stack->top;
+    struct node* temp = stack->top; // remove top most node
     stack->top = stack->top->next;
-    stack->iterator--;
+    stack->nodeCount--; // decrease node count by one
     free(temp);
 }
 
