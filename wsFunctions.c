@@ -7,13 +7,14 @@
 #define STACK_H
 
 
-struct letters {
-    char letter;
-    struct letters* next;
+struct node {
+    int i;
+    int j;
+    struct node* next;
 };
 
 struct Stack {
-    struct letters* top;
+    struct node* top;
 };
 
 struct Stack* createStack() {
@@ -30,7 +31,7 @@ void destroyStack(struct Stack* stack) {
         return;
     }
 
-    struct letters* temp;
+    struct node* temp;
     while (stack->top != NULL) {
         temp = stack->top;
         stack->top = stack->top->next;
@@ -40,27 +41,27 @@ void destroyStack(struct Stack* stack) {
     free(stack);
 }
 
-void push(struct Stack* stack, char letter) {
-    struct letters* temp = (struct letters*)malloc(sizeof(struct letters));
+void push(struct Stack* stack, struct node* loc) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
     if (temp == NULL) {
         fprintf(stderr, "Memory allocation error\n");
         return;
     }
 
-    temp->letter = letter;
+    temp->i = loc->i;
+    temp->j = loc->j;
     temp->next = stack->top;
     stack->top = temp;
 }
 
-void pop(struct Stack* stack, char* letter) {
+void pop(struct Stack* stack, struct node loc) {
     if (stack->top == NULL) {
         fprintf(stderr, "Stack is empty.\n");
-        *letter = '\0';
+        //*letter = '\0';
         return;
     }
 
-    struct letters* temp = stack->top;
-    *letter = stack->top->letter;
+    struct node* temp = stack->top;
     stack->top = stack->top->next;
     free(temp);
 }
