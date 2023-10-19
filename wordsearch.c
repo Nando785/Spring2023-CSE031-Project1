@@ -73,10 +73,12 @@ void printPuzzle(char** arr) {
 }
 
 void capsAll(char* word){ // capitalize all letters in word
-    for(int i = 0; i < 20; i++){
-        if(*(word + i) >= 'a' && *(word + i) <= 'z'){ // check if lower case letter
-            *(word + i) = *(word + i) - 32; // capitalize letters (subtract 32 from ASCII value)
+    char* loc = word;
+    while(*loc != '\0'){
+        if(*loc >= 'a' && *loc <= 'z'){ // check if lower case letter
+            *loc = *loc - 32; // capitalize letters (subtract 32 from ASCII value)
         }
+        loc++;
     }
 }
 
